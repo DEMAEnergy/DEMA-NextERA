@@ -1,0 +1,92 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.github.johnrengelman:shadow:8.1.1'
+    }
+}
+
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+
+}
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'sa.com.demaenergy.Main'
+        )
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+group = 'sa.com.demaenergy'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+
+shadowJar {
+    mergeServiceFiles {
+        include 'reference.conf'
+    }
+    transform(AppendingTransformer) {
+        resource = 'reference.conf'
+    }
+}
+dependencies {
+    implementation 'com.typesafe.akka:akka-actor-typed_2.13:2.8.3'
+    implementation 'com.typesafe.akka:akka-stream_2.13:2.8.3'
+
+    implementation 'com.typesafe.akka:akka-http_2.13:10.5.3'
+    implementation 'com.typesafe.akka:akka-http-core_2.13:10.5.3'
+
+    implementation "com.typesafe.akka:akka-stream_2.13"
+
+    implementation 'com.typesafe.akka:akka-slf4j_2.13:2.8.3'
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
+
+    implementation 'org.jsoup:jsoup:1.17.2'
+    implementation 'org.postgresql:postgresql:42.7.3'
+    implementation 'org.apache.plc4x:plc4j-api:0.11.0'
+    runtimeOnly 'org.apache.plc4x:plc4j-driver-modbus:0.11.0'
+    implementation "com.typesafe.akka:akka-http-jackson_2.13:10.5.3"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1"
+
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
+    implementation 'org.flywaydb:flyway-core:10.7.1'
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql:10.7.1'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs += ['--enable-preview']
+}
