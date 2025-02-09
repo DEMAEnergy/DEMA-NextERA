@@ -1,0 +1,26 @@
+{
+    "2023": {
+        "GasTurbinesPlants": 31410,
+        "GasCombinedCyclePlants": 10490,
+        "CrudeOilCombinedCyclePlants": 1000,
+        "HFOCombinedCyclePlants": 1740,
+        "CrudeOilPoweredSteamTurbines": 18000,
+        "HFOPoweredSteamTurbines": 20860,
+        "DieselGenerators": 270,
+        "DieselPoweredSteamTurbines": 5930,
+        "SolarPV": 500,
+        "WindFarm": 500
+    },
+    "2030": {
+        "GasTurbinesPlants": 40000,
+        "GasCombinedCyclePlants": 35000,
+        "CrudeOilCombinedCyclePlants": 1500,
+        "HFOCombinedCyclePlants": 2000,
+        "CrudeOilPoweredSteamTurbines": 20000,
+        "HFOPoweredSteamTurbines": 22000,
+        "DieselGenerators": 300,
+        "DieselPoweredSteamTurbines": 6000,
+        "SolarPV": 70000,
+        "WindFarm": 24000
+    }
+}

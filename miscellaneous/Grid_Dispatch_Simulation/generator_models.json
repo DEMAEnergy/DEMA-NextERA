@@ -1,0 +1,152 @@
+[
+    {
+        "type": "GasTurbinesPlants",
+        "capacity_range": [50, 300],
+        "heat_rate_data": [
+            [1, 10500],
+            [0.75, 11025],
+            [0.5, 11550],
+            [0.25, 12600]
+        ],
+        "ramp_rate": [20, 40], 
+        "start_up_time": [0.25, 0.75], 
+        "wait_time_after_shutdown": [0.1, 0.5],  
+        "start_up_cost": [10000, 50000], 
+        "shutdown_cost": [5000, 25000]  
+    },
+    {
+        "type": "GasCombinedCyclePlants",
+        "capacity_range": [100, 1000],
+        "heat_rate_data": [
+            [1, 7000],
+            [0.75, 7210],
+            [0.5, 7420],
+            [0.25, 7840]
+        ],
+        "ramp_rate": [5, 10],
+        "start_up_time": [1.0, 4.0],
+        "wait_time_after_shutdown": [0.5, 2.0],
+        "start_up_cost": [50000, 200000],
+        "shutdown_cost": [25000, 100000]
+    },
+    {
+        "type": "CrudeOilCombinedCyclePlants",
+        "capacity_range": [100, 500],
+        "heat_rate_data": [
+            [1, 8000],
+            [0.75, 8320],
+            [0.5, 8640],
+            [0.25, 9200]
+        ],
+        "ramp_rate": [5, 10],
+        "start_up_time": [1.5, 4.0],
+        "wait_time_after_shutdown": [1.0, 2.0],
+        "start_up_cost": [60000, 250000],
+        "shutdown_cost": [30000, 125000]
+    },
+    {
+        "type": "HFOCombinedCyclePlants",
+        "capacity_range": [50, 500],
+        "heat_rate_data": [
+            [1, 8200],
+            [0.75, 8528],
+            [0.5, 8856],
+            [0.25, 9430]
+        ],
+        "ramp_rate": [3, 8],
+        "start_up_time": [2.0, 5.0],
+        "wait_time_after_shutdown": [1.0, 3.0],
+        "start_up_cost": [70000, 300000],
+        "shutdown_cost": [35000, 150000]
+    },
+    {
+        "type": "CrudeOilPoweredSteamTurbines",
+        "capacity_range": [100, 1000],
+        "heat_rate_data": [
+            [1, 10500],
+            [0.75, 11025],
+            [0.5, 11550],
+            [0.25, 12600]
+        ],
+        "ramp_rate": [1, 5],
+        "start_up_time": [4.0, 8.0],
+        "wait_time_after_shutdown": [2.0, 4.0],
+        "start_up_cost": [80000, 500000],
+        "shutdown_cost": [40000, 250000]
+    },
+    {
+        "type": "HFOPoweredSteamTurbines",
+        "capacity_range": [100, 1000],
+        "heat_rate_data": [
+            [1, 10700],
+            [0.75, 11235],
+            [0.5, 11770],
+            [0.25, 12840]
+        ],
+        "ramp_rate": [1, 5],
+        "start_up_time": [4.0, 8.0],
+        "wait_time_after_shutdown": [2.0, 4.0],
+        "start_up_cost": [80000, 500000],
+        "shutdown_cost": [40000, 250000]
+    },
+    {
+        "type": "DieselGenerators",
+        "capacity_range": [0.5, 50],
+        "heat_rate_data": [
+            [1, 10000],
+            [0.75, 10700],
+            [0.5, 11400],
+            [0.25, 12500]
+        ],
+        "ramp_rate": [20, 50],
+        "start_up_time": [0.1, 0.5],
+        "wait_time_after_shutdown": [0.05, 0.25],
+        "start_up_cost": [1000, 20000],
+        "shutdown_cost": [500, 10000]
+    },
+    {
+        "type": "DieselPoweredSteamTurbines",
+        "capacity_range": [50, 300],
+        "heat_rate_data": [
+            [1, 10800],
+            [0.75, 11340],
+            [0.5, 11880],
+            [0.25, 12960]
+        ],
+        "ramp_rate": [1, 5],
+        "start_up_time": [3.0, 6.0],
+        "wait_time_after_shutdown": [1.5, 3.0],
+        "start_up_cost": [70000, 400000],
+        "shutdown_cost": [35000, 200000]
+    },
+    {
+        "type": "SolarPV",
+        "capacity_range": [1, 500],
+        "heat_rate_data": [
+            [1, 0],
+            [0.75, 0],
+            [0.5, 0],
+            [0.25, 0]
+        ],
+        "ramp_rate": [0, 0],
+        "start_up_time": [0, 0],
+        "wait_time_after_shutdown": [0, 0],
+        "start_up_cost": [0, 0],
+        "shutdown_cost": [0, 0]
+    },
+    {
+        "type": "WindFarm",
+        "capacity_range": [1, 500],
+        "heat_rate_data": [
+            [1, 0],
+            [0.75, 0],
+            [0.5, 0],
+            [0.25, 0]
+        ],
+        "ramp_rate": [0, 0],
+        "start_up_time": [0, 0],
+        "wait_time_after_shutdown": [0, 0],
+        "start_up_cost": [0, 0],
+        "shutdown_cost": [0, 0]
+    }
+]
