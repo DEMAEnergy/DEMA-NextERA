@@ -1,0 +1,216 @@
+version: '3.8'
+
+services:
+  # Core Services
+  dispatch:
+    build: ./dispatch_service
+    ports:
+      - "8001:8001"
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - REDIS_HOST=redis
+      - PYTHONPATH=/app
+      - MODULE_NAME=src.main
+      - VARIABLE_NAME=app
+      - PORT=8001
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      - kafka
+      - redis
+
+  control:
+    build: ./control_service
+    ports:
+      - "8002:8002"
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - REDIS_HOST=redis
+      - PYTHONPATH=/app
+      - PORT=8002
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      - kafka
+      - redis
+
+  # Infrastructure Services
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    healthcheck:
+      test: ["CMD-SHELL", "echo ruok | nc localhost 2181 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+# Control Services
+resource-control:
+  build: ./control_services/resource_control
+  ports:
+    - "8003:8003"
+  environment:
+    - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  depends_on:
+    - kafka
+
+grid-control:
+  build: ./control_services/grid_control
+  ports:
+    - "8004:8004"
+  environment:
+    - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  depends_on:
+    - kafka
+
+emergency-response:
+  build: ./control_services/emergency_response
+  ports:
+    - "8005:8005"
+  environment:
+    - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  depends_on:
+    - kafka
+
+# Data Services
+timeseries-db:
+  image: influxdb:latest
+  ports:
+    - "8086:8086"
+  volumes:
+    - timeseries_data:/var/lib/influxdb
+  environment:
+    - INFLUXDB_DB=vpp_data
+    - INFLUXDB_ADMIN_USER=admin
+    - INFLUXDB_ADMIN_PASSWORD=admin_password
+
+state-management:
+  build: ./data_services/state_management
+  ports:
+    - "8006:8006"
+  environment:
+    - REDIS_HOST=redis
+  depends_on:
+    - redis
+
+analytics:
+  build: ./data_services/analytics
+  ports:
+    - "8007:8007"
+  environment:
+    - INFLUXDB_HOST=timeseries-db
+  depends_on:
+    - timeseries-db
+
+# Grid Services
+topology:
+  build: ./grid_services/topology
+  ports:
+    - "8008:8008"
+  environment:
+    - NEO4J_HOST=neo4j
+  depends_on:
+    - neo4j
+
+power-flow:
+  build: ./grid_services/power_flow
+  ports:
+    - "8009:8009"
+  depends_on:
+    - topology
+
+state-estimation:
+  build: ./grid_services/state_estimation
+  ports:
+    - "8010:8010"
+  depends_on:
+    - topology
+    - timeseries-db
+
+# Integration Services
+grid-operator:
+  build: ./integration_services/grid_operator
+  ports:
+    - "8011:8011"
+  environment:
+    - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  depends_on:
+    - kafka
+
+market-interface:
+  build: ./integration_services/market
+  ports:
+    - "8012:8012"
+  environment:
+    - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  depends_on:
+    - kafka
+
+external-systems:
+  build: ./integration_services/external
+  ports:
+    - "8013:8013"
+  environment:
+    - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+  depends_on:
+    - kafka
+
+neo4j:
+  image: neo4j:latest
+  ports:
+    - "7474:7474"
+    - "7687:7687"
+  volumes:
+    - neo4j_data:/data
+  environment:
+    - NEO4J_AUTH=neo4j/password
+
+volumes:
+  redis_data:
+  timeseries_data:
+  neo4j_data: 
