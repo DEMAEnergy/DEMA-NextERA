@@ -1,0 +1,248 @@
+{
+  "hierarchy": {
+    "level1_transmission": {
+      "gridOperations": {
+        "id": "gridOperations",
+        "type": "gridOps",
+        "label": "Grid Operations Center",
+        "position": { "x": 600, "y": 50 },
+        "sections": {
+          "transmission": {
+            "label": "Transmission Network",
+            "monitoring": {
+              "voltage": "132kV",
+              "frequency": "50.02 Hz",
+              "loadFlow": "85.5 MW"
+            }
+          },
+          "dispatch": {
+            "label": "Grid Dispatch",
+            "monitoring": {
+              "dispatchSignal": "Reduction",
+              "requestedPower": "-2.5 MW",
+              "eventDuration": "2 hours"
+            },
+            "controls": {
+              "demandResponse": {
+                "value": "active",
+                "options": ["active", "standby", "inactive"]
+              },
+              "responseType": {
+                "value": "emergency",
+                "options": ["emergency", "economic", "planned"]
+              },
+              "targetReduction": {
+                "value": 2.5,
+                "min": 0,
+                "max": 5,
+                "unit": "MW"
+              }
+            }
+          }
+        }
+      }
+    },
+    "level2_distribution": {
+      "distributionOps": {
+        "id": "distributionOps",
+        "type": "distOps",
+        "label": "Distribution Operations",
+        "position": { "x": 600, "y": 650 },
+        "sections": {
+          "substation": {
+            "label": "Main Distribution Substation",
+            "monitoring": {
+              "voltage": "33kV",
+              "loading": "75%",
+              "temperature": "42°C"
+            }
+          },
+          "distribution": {
+            "label": "Distribution System",
+            "monitoring": {
+              "powerQuality": "98.5%",
+              "activePower": "12.4 MW",
+              "reactivePower": "2.1 MVAR",
+              "flexibilityAvailable": "3.2 MW",
+              "participatingCustomers": 245
+            },
+            "controls": {
+              "voltageRegulation": {
+                "value": "auto",
+                "options": ["auto", "manual"]
+              },
+              "demandSideResponse": {
+                "value": "enabled",
+                "options": ["enabled", "disabled"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "level3_vpp": {
+      "components": {
+        "controller": {
+          "id": "controller",
+          "type": "vppComponent",
+          "label": "Distribution Network Controller",
+          "position": { "x": 300, "y": 1250 },
+          "monitoring": {
+            "status": "Active",
+            "controlMode": "Automatic",
+            "activeResources": 6
+          },
+          "controls": {
+            "operationMode": {
+              "value": "automatic",
+              "options": ["automatic", "manual", "maintenance"]
+            }
+          }
+        },
+        "optimizer": {
+          "id": "optimizer",
+          "type": "vppComponent",
+          "label": "Optimization Engine",
+          "position": { "x": 600, "y": 1250 },
+          "monitoring": {
+            "algorithm": "Running",
+            "optimizationGoal": "Cost Minimization",
+            "lastUpdate": "30s ago"
+          },
+          "controls": {
+            "optimizationTarget": {
+              "value": "cost",
+              "options": ["cost", "emissions", "reliability"]
+            },
+            "updateInterval": {
+              "value": 300,
+              "min": 60,
+              "max": 900,
+              "unit": "s"
+            }
+          }
+        },
+        "cloud": {
+          "id": "cloud",
+          "type": "vppComponent",
+          "label": "DEMA Cloud",
+          "position": { "x": 900, "y": 1250 },
+          "monitoring": {
+            "aiStatus": "Active",
+            "dataStorage": "85%",
+            "predictions": "Updated"
+          },
+          "controls": {
+            "dataRetention": {
+              "value": 30,
+              "min": 7,
+              "max": 90,
+              "unit": "days"
+            }
+          }
+        }
+      }
+    },
+    "level4_resources": {
+      "solar": {
+        "id": "solar",
+        "type": "resource",
+        "position": { "x": 150, "y": 1850 }
+      },
+      "wind": {
+        "id": "wind",
+        "type": "resource",
+        "position": { "x": 400, "y": 1850 }
+      },
+      "battery": {
+        "id": "battery",
+        "type": "resource",
+        "position": { "x": 650, "y": 1850 }
+      },
+      "hvac": {
+        "id": "hvac",
+        "type": "resource",
+        "position": { "x": 900, "y": 1850 }
+      },
+      "ev": {
+        "id": "ev",
+        "type": "resource",
+        "position": { "x": 1150, "y": 1850 }
+      }
+    }
+  },
+  "styles": {
+    "resource": {
+      "background": "white",
+      "border": "2px solid #1e40af",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "250px",
+      "fontSize": "12px",
+      "boxShadow": "0 2px 4px rgba(0,0,0,0.1)"
+    },
+    "vppComponent": {
+      "background": "white",
+      "border": "2px solid #1e3a8a",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "280px",
+      "fontSize": "12px",
+      "boxShadow": "0 4px 6px rgba(0,0,0,0.1)"
+    },
+    "transmission": {
+      "background": "rgb(186, 230, 253)",
+      "border": "2px solid #0369a1",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "300px",
+      "fontSize": "12px",
+      "boxShadow": "0 4px 6px rgba(0,0,0,0.1)"
+    },
+    "dispatch": {
+      "background": "rgb(147, 197, 253)",
+      "border": "2px solid #1d4ed8",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "300px",
+      "fontSize": "12px",
+      "boxShadow": "0 4px 6px rgba(0,0,0,0.1)"
+    },
+    "substation": {
+      "background": "rgb(186, 230, 253)",
+      "border": "2px solid #0369a1",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "300px",
+      "fontSize": "12px",
+      "boxShadow": "0 4px 6px rgba(0,0,0,0.1)"
+    },
+    "distribution": {
+      "background": "rgb(147, 197, 253)",
+      "border": "2px solid #1d4ed8",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "300px",
+      "fontSize": "12px",
+      "boxShadow": "0 4px 6px rgba(0,0,0,0.1)"
+    },
+    "gridOps": {
+      "background": "linear-gradient(to right, rgb(186, 230, 253), rgb(147, 197, 253))",
+      "border": "2px solid #0369a1",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "500px",
+      "fontSize": "12px",
+      "boxShadow": "0 4px 6px rgba(0,0,0,0.1)"
+    },
+    "distOps": {
+      "background": "linear-gradient(to right, rgb(186, 230, 253), rgb(147, 197, 253))",
+      "border": "2px solid #0369a1",
+      "borderRadius": "8px",
+      "padding": "12px",
+      "width": "500px",
+      "fontSize": "12px",
+      "boxShadow": "0 4px 6px rgba(0,0,0,0.1)"
+    }
+  }
+} 
